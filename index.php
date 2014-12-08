@@ -3,12 +3,12 @@ include ("common.php");
 session_start();
 // Name: Carly Swanson
 // Class: ITMO 544
-// Assignment: Mini-Assignment 4
+// Assignment: Final Assignment
 $html = '';
 $html .= getDoctype();
 $html .= getHtmlStart();
 $html .= getHeader("Upload an Image");
-$html .= getBody(getDiv(getUploadForm(), "formContainer"));
+$html .= getBody(getDiv(getUploadForm(), "formContainer") . getDiv(getGalleryForm()));
 $html .= getHtmlEnd();
 echo $html;
 
@@ -20,14 +20,25 @@ function getUploadForm()
 	$html .= getLabel("username", "Your Name:");
 	$html .= '<input type="text" name="username" id="username" />';
 	$html .= getLabel("email", "Email:");
-	$html .= '<input type="text" name="email" id="email" />';
+	$html .= '<input type="email" name="email" id="email" />';
 	$html .= getLabel("cellPhone", "Cell Phone Number:");
-	$html .= '<input type="text" name="cellPhone" id="cellPhone" />';
+	$html .= '<input type="tel" name="cellPhone" id="cellPhone" />';
 	$html .= '<input type="hidden" name="MAX_FILE_SIZE" value="30000" />';
 	$html .= getLabel($fileInputName, "Please choose a file to upload:");
 	$html .= "<input type='file' name='$fileInputName' />";
 	$html .= '<input type="submit" value="Upload Image" />';
 	$html .= "</form>";
+	return $html;
+}
+
+function getGalleryForm()
+{
+	$html = '';
+	$html .= '<form id="galleryForm" action="gallery.php" method="post">';
+	$html .= getParagraph("Enter your email address to see all of your previous uploads.");
+	$html .= getLabel("galleryEmail", "Email:");
+	$html .= '<input type="submit" value="View Gallery" />';
+	$html .= '</form>';
 	return $html;
 }
 

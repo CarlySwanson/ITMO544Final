@@ -6,7 +6,7 @@ require 'vendor/autoload.php';
 use Aws\S3\S3Client;
 // Name: Carly Swanson
 // Class: ITMO 544
-// Assignment: Mini-Assignment 4
+// Assignment: Final Assignment
 include ("common.php");
 if (isset($_POST["username"]))
 {

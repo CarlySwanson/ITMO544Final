@@ -1,7 +1,7 @@
 <?php
 // Name: Carly Swanson
 // Class: ITMO 544
-// Assignment: Mini-Assignment 4
+// Assignment: Final Assignment
 function getDoctype()
 {
 	$html = "<!DOCTYPE html>";
