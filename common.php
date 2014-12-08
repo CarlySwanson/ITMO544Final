@@ -55,4 +55,22 @@ function getHtmlEnd()
 	$html = "</html>";
 	return $html;
 }
+
+function getQueueURL()
+{
+	$queueURL = 'MODIFYTHISEXPRESSIONqueueURLMODIFYTHISEXPRESSION';
+	return $queueURL;
+}
+
+function getDatabaseEndpoint()
+{
+	$dbEndpoint = 'MODIFYTHISEXPRESSIONdbURLMODIFYTHISEXPRESSION';
+	return $dbEndpoint;
+}
+
+function getDbWriteConnection()
+{
+	$link = mysqli_connect(getDatabaseEndpoint(), "thedoctor", "ilovethetardis", "ImageProcessing");
+	return $link;
+}
 ?>

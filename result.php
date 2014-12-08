@@ -8,19 +8,11 @@ use Aws\S3\S3Client;
 // Class: ITMO 544
 // Assignment: Final Assignment
 include ("common.php");
-if (isset($_POST["username"]))
+if (!isset($_POST["username"]) || !isset($_POST["email"]) || !isset($_POST["cellPhone"]))
 {
-	$_SESSION["username"] = $_POST["username"];
-}
-
-if(isset($_POST["email"]))
-{
-	$_SESSION["email"] = $_POST["email"];
-}
-
-if(isset($_POST["cellPhone"]))
-{
-	$_SESSION["cellPhone"] = $_POST["cellPhone"];
+	$html = getDiv(getParagraph("An error occurred while processing your upload; please be sure to fill in all of the upload form fields. <a href='index.php'>Click here to return to the upload page.</a>", "inputError"));
+	echo $html;
+	exit;
 }
 $fileInputName = "imageToUpload";
 $uploaddir = '/var/www/uploads/';
@@ -65,12 +57,36 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 		'Key' => $key,
 		'ACL' => 'public-read'
 	));
-	$imageDisplayContent = getParagraph("Uploaded image:");
+	
+	$imageDisplayContent = getParagraph("Thank you for uploading your image. You will receive an email shortly, which will give you the option to subscribe to notifications about the processing status of your image. If you subscribe, you will receive a text update when your image has been processed.", "uploadInfo");
+	$imageDisplayContent .= getParagraph("Uploaded image:");
 	$imageDisplayContent .= "<img src='$imageURL' alt='Your uploaded image' />";
-	$imageDisplayContent .= getParagraph("Uploader Name: ".$_SESSION['username']);
-	$imageDisplayContent .= getParagraph("Email: ".$_SESSION['email']);
-	$imageDisplayContent .= getParagraph("Cell Phone Number: ".$_SESSION['cellPhone']);
+	$imageDisplayContent .= getParagraph("Uploader Name: ".$_POST['username']);
+	$imageDisplayContent .= getParagraph("Email: ".$_POST['email']);
+	$imageDisplayContent .= getParagraph("Cell Phone Number: ".$_POST['cellPhone']);
 	$bodyContent .= getDiv($imageDisplayContent, "uploadedImage");
+
+	$link = getDbWriteConnection() or die("A database error occurred: " . mysqli_error($link);
+
+	if (!($stmt = $link->prepare("INSERT INTO student (id, email,phone,filename,s3rawurl,s3finishedurl,status,issubscribed) VALUES (NULL,?,?,?,?,?,?,?)")))
+	{
+		echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+		exit;
+	}
+
+	$fileName = basename($_FILES[$fileInputName]['name']);
+	$stmt->bind_param("sssssii",$_POST["email"],$_POST["cellPhone"],$fileName,$imageURL,"none",0,0);
+
+	if (!$stmt->execute())
+	{
+		echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+		exit;
+	}
+
+	$stmt->close();
+
+	$link->real_query("SELECT MAX(id) FROM uploads");
+	$result = $link->use_result();
 } else {
 	$bodyContent .= getDiv(getParagraph("A problem occurred while uploading the image. Please <a href='index.php'>return to the upload page</a> and try again."), "uploadStatus");
 }
