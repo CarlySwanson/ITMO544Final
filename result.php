@@ -72,9 +72,11 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 		die("A database error occurred: " . mysqli_error($link);
 	}
 
+	$stmt = null;
+
 	if (!($stmt = $link->prepare("INSERT INTO student (id, email,phone,filename,s3rawurl,s3finishedurl,status,issubscribed) VALUES (NULL,?,?,?,?,?,?,?)")))
 	{
-		$bodyContent .= getDiv("Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error);
+		echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 	}
 	else
 	{
@@ -88,19 +90,22 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 		}
 		else
 		{
-
-			$stmt->close();
-
 			$link->real_query("SELECT MAX(id) as maxID FROM uploads");
 			$result = $link->use_result();
 
 			$row = $result->fetch_assoc();
 			$rowID = $row['maxID'];
+			$bodyContent .= getDiv(getParagraph("Inserted row ID: $rowID"));
 		}
 	}
 
-	$bodyContent .= getDiv(getParagraph("Inserted row ID: $rowID"));
-} else {
+	if ($stmt != null)
+	{
+		$stmt->close();
+	}
+}
+else
+{
 	$bodyContent .= getDiv(getParagraph("A problem occurred while uploading the image. Please <a href='index.php'>return to the upload page</a> and try again."), "uploadStatus");
 }
 
