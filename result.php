@@ -86,16 +86,17 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 
 		if (!$stmt->execute())
 		{
-			$bodyContent .= getDiv("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+			echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 		}
 		else
 		{
-			$link->real_query("SELECT MAX(id) as maxID FROM uploads");
+			/*$link->real_query("SELECT MAX(id) as maxID FROM uploads");
 			$result = $link->use_result();
 
 			$row = $result->fetch_assoc();
 			$rowID = $row['maxID'];
-			$bodyContent .= getDiv(getParagraph("Inserted row ID: $rowID"));
+			$bodyContent .= getDiv(getParagraph("Inserted row ID: $rowID"));*/
+			$bodyContent .= getParagraph("Insert successful!");
 		}
 	}
 
