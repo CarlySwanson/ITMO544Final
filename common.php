@@ -70,7 +70,7 @@ function getDatabaseEndpoint()
 
 function getDbWriteConnection()
 {
-	$link = mysqli_connect(getDatabaseEndpoint(), "thedoctor", "ilovethetardis", "ImageProcessing");
+	$link = mysqli_connect(getDatabaseEndpoint(), "thedoctor", "ilovethetardis", "ImageProcessing", 3306);
 	return $link;
 }
 ?>
