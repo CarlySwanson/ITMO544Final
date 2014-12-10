@@ -85,8 +85,13 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 
 	$stmt->close();
 
-	$link->real_query("SELECT MAX(id) FROM uploads");
+	$link->real_query("SELECT MAX(id) as maxID FROM uploads");
 	$result = $link->use_result();
+
+	$row = $result->fetch_assoc();
+	$rowID = $row['maxID'];
+
+	$bodyContent .= getDiv(getParagraph("Inserted row ID: $rowID"));
 } else {
 	$bodyContent .= getDiv(getParagraph("A problem occurred while uploading the image. Please <a href='index.php'>return to the upload page</a> and try again."), "uploadStatus");
 }
