@@ -11,7 +11,7 @@ if (mysqli_connect_errno())
 	exit();
 }
 
-$create_table = 'CREATE TABLE IF NOT EXISTS items
+$create_table = 'CREATE TABLE IF NOT EXISTS uploads
 (
 	id INT NOT NULL AUTO_INCREMENT,
 	email VARCHAR(200) NOT NULL,
