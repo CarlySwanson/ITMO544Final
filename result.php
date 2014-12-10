@@ -66,30 +66,38 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 	$imageDisplayContent .= getParagraph("Cell Phone Number: ".$_POST['cellPhone']);
 	$bodyContent .= getDiv($imageDisplayContent, "uploadedImage");
 
-	$link = getDbWriteConnection() or die("A database error occurred: " . mysqli_error($link);
+	$link = getDbWriteConnection();
+	if (!$link || $link == null)
+	{
+		die("A database error occurred: " . mysqli_error($link);
+	}
 
 	if (!($stmt = $link->prepare("INSERT INTO student (id, email,phone,filename,s3rawurl,s3finishedurl,status,issubscribed) VALUES (NULL,?,?,?,?,?,?,?)")))
 	{
-		echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
-		exit;
+		$bodyContent .= getDiv("Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error);
 	}
-
-	$fileName = basename($_FILES[$fileInputName]['name']);
-	$stmt->bind_param("sssssii",$_POST["email"],$_POST["cellPhone"],$fileName,$imageURL,"none",0,0);
-
-	if (!$stmt->execute())
+	else
 	{
-		echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-		exit;
+
+		$fileName = basename($_FILES[$fileInputName]['name']);
+		$stmt->bind_param("sssssii",$_POST["email"],$_POST["cellPhone"],$fileName,$imageURL,"none",0,0);
+
+		if (!$stmt->execute())
+		{
+			$bodyContent .= getDiv("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+		}
+		else
+		{
+
+			$stmt->close();
+
+			$link->real_query("SELECT MAX(id) as maxID FROM uploads");
+			$result = $link->use_result();
+
+			$row = $result->fetch_assoc();
+			$rowID = $row['maxID'];
+		}
 	}
-
-	$stmt->close();
-
-	$link->real_query("SELECT MAX(id) as maxID FROM uploads");
-	$result = $link->use_result();
-
-	$row = $result->fetch_assoc();
-	$rowID = $row['maxID'];
 
 	$bodyContent .= getDiv(getParagraph("Inserted row ID: $rowID"));
 } else {
