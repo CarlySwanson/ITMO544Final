@@ -58,13 +58,13 @@ function getHtmlEnd()
 
 function getQueueURL()
 {
-	$queueURL = 'MODIFYTHISEXPRESSIONqueueURLMODIFYTHISEXPRESSION';
+	$queueURL = 'MODLEVEL2queueURLMODLEVEL2';
 	return $queueURL;
 }
 
 function getDatabaseEndpoint()
 {
-	$dbEndpoint = 'MODIFYTHISEXPRESSIONdbURLMODIFYTHISEXPRESSION';
+	$dbEndpoint = 'MODLEVEL2dbURLMODLEVEL2';
 	return $dbEndpoint;
 }
 
