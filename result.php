@@ -83,8 +83,8 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 	{
 
 		$fileName = basename($_FILES[$fileInputName]['name']);
-		$email = $_POST["useremail"];
-		$phone = $_POST["phone"];
+		$email = $_POST["email"];
+		$phone = $_POST["cellPhone"];
 		$s3rawURL = $imageURL;
 		$s3finishedurl = "none";
 		$status =0;
