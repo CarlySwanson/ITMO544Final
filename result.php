@@ -24,7 +24,6 @@ $html .= getDoctype();
 $html .= getHtmlStart();
 $html .= getHeader("Upload Result");
 $bodyContent = '';
-$bodyContent .= $_FILES[$fileInputName]['tmp_name'];
 if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 	$client = S3Client::factory();
 	$imageURL = '';
@@ -110,6 +109,7 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 else
 {
 	$bodyContent .= getDiv(getParagraph("A problem occurred while uploading the image. Please <a href='index.php'>return to the upload page</a> and try again."), "uploadStatus");
+	$bodyContent .= $_FILES[$fileInputName]['tmp_name'];
 }
 
 $html .= getBody($bodyContent);
