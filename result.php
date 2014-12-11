@@ -24,6 +24,7 @@ $html .= getDoctype();
 $html .= getHtmlStart();
 $html .= getHeader("Upload Result");
 $bodyContent = '';
+$bodyContent .= $_FILES[$fileInputName]['tmp_name'];
 if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 	$client = S3Client::factory();
 	$imageURL = '';
