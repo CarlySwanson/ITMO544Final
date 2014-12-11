@@ -73,4 +73,13 @@ function getDbWriteConnection()
 	$link = mysqli_connect(getDatabaseEndpoint(), "thedoctor", "ilovethetardis", "ImageProcessing", 3306);
 	return $link;
 }
+
+function getDbReadConnection($replicaNumber = 1)
+{
+	$endpoint = getDatabaseEndpoint();
+	$firstDotIndex = strpos($endpoint, '.');
+	$modifiedEndpoint = substr($endpoint, 0, $firstDotIndex) . $replicaNumber . substr($endpoint, $firstDotIndex);
+	$link = mysqli_connect($modifiedEndpoint, "thedoctor", "ilovethetardis", "ImageProcessing", 3306);
+	return $link;
+}
 ?>
