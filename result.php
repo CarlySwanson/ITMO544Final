@@ -75,7 +75,7 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 
 	$stmt = null;
 
-	if (!($stmt = $link->prepare("INSERT INTO student (id, email,phone,filename,s3rawurl,s3finishedurl,status,issubscribed) VALUES (NULL,?,?,?,?,?,?,?)")))
+	if (!($stmt = $link->prepare("INSERT INTO uploads (id, email,phone,filename,s3rawurl,s3finishedurl,status,issubscribed) VALUES (NULL,?,?,?,?,?,?,?)")))
 	{
 		echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 	}
@@ -109,7 +109,6 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 else
 {
 	$bodyContent .= getDiv(getParagraph("A problem occurred while uploading the image. Please <a href='index.php'>return to the upload page</a> and try again."), "uploadStatus");
-	$bodyContent .= $_FILES[$fileInputName]['tmp_name'];
 }
 
 $html .= getBody($bodyContent);
