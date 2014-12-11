@@ -14,6 +14,7 @@ $client = SqsClient::factory(array(
 	'region' => 'us-east-1'
 ));
 
+$s3rawurl = '';
 $queueURL = getQueueURL();
 
 while (true)
@@ -30,7 +31,7 @@ while (true)
 		$link = getDbReadConnection(1) or die("A read database error occurred: " . mysqli_error($link));
 		$rowID = $messageBody;
 		$stmt = null;
-		if (!($stmt = $link->prepare("SELECT * FROM uploads WHERE id = '?'")))
+		if (!($stmt = $link->prepare("SELECT s3rawurl FROM uploads WHERE id = '?'")))
 		{
 			echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 		}
@@ -47,7 +48,6 @@ while (true)
 				$email = '';
 				$phone = '';
 				$filename = '';
-				$s3rawurl = '';
 				$s3finishedurl = '';
 				$status = '';
 				$issubscribed = '';
