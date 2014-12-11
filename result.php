@@ -89,7 +89,7 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 		$s3finishedurl = "none";
 		$status =0;
 		$issubscribed=0;
-		$stmt->bind_param("sssssii",$email,$phone,$fileName,$s3rawurl,$s3finishedurl,$status,$issubscribed);
+		$stmt->bind_param("sssssii",$email,$phone,$fileName,$s3rawURL,$s3finishedurl,$status,$issubscribed);
 
 		if (!$stmt->execute())
 		{
