@@ -4,6 +4,7 @@ session_start();
 require 'vendor/autoload.php';
 // Use the S3Client class from the AWS SDK
 use Aws\S3\S3Client;
+use Aws\Sqs\SqsClient;
 // Name: Carly Swanson
 // Class: ITMO 544
 // Assignment: Final Assignment
@@ -104,12 +105,29 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 			$rowID = $row['maxID'];
 			$bodyContent .= getDiv(getParagraph("Inserted row ID: $rowID"));
 			$bodyContent .= getParagraph("Insert successful!");
+
+			$client = SqsClient::factory(array(
+				'region' => 'us-east-1'
+			));
+
+			$queueURL = getQueueURL();
+
+			$result = $client->sendMessage(array(
+				'QueueUrl' => "$queueURL",
+				'MessageBody' => "$rowID"));
+
+			$bodyContent .= getParagraph("Sending message to queue at ${queueURL}...");
 		}
 	}
 
 	if ($stmt != null)
 	{
 		$stmt->close();
+	}
+
+	if ($link != null && $link != false)
+	{
+		$link->close();
 	}
 }
 else
