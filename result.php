@@ -75,7 +75,7 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 
 	$stmt = null;
 
-	if (!($stmt = $link->prepare("INSERT INTO uploads (id, email,phone,filename,s3rawurl,s3finishedurl,status,issubscribed) VALUES (NULL,?,?,?,?,?,?,?)")))
+	if (!($stmt = $link->prepare("INSERT INTO uploads (id,email,phone,filename,s3rawurl,s3finishedurl,status,issubscribed) VALUES (NULL,?,?,?,?,?,?,?)")))
 	{
 		echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 	}
