@@ -65,6 +65,38 @@ while (true)
 					$stmt->close();
 					$link->close();
 
+					$s3client = S3Client::factory();
+					$imageURL = '';
+					$bucket = uniqid("Swanson-Carly-final-mod-", true);
+					$result = $s3client->createBucket(array(
+    						'Bucket' => $bucket
+					));
+
+					// Wait for the bucket to be created before setting its ACL
+					$s3client->waitUntilBucketExists(array('Bucket' => $bucket));
+					$s3client->putBucketAcl(array(
+						'Bucket' => $bucket,
+						'ACL' => 'public-read'
+					));
+
+					$key = basename($s3rawurl);
+					$result = $s3client->putObject(array(
+    						'Bucket' => $bucket,
+    						'Key'    => $key,
+    						'SourceFile' => "/tmp/g5.png"
+					));
+
+					$s3client->waitUntil('ObjectExists', array(
+						'Bucket' => $bucket,
+						'Key' => $key
+					));
+					$s3client->putObjectAcl(array(
+						'Bucket' => $bucket,
+						'Key' => $key,
+						'ACL' => 'public-read'
+					));
+					$s3finishedurl = $result['ObjectURL'];
+
 					$writeLink = getDbWriteConnection() or die("A write database error occurred: " . mysqli_error($link));
 					$updateStmt = null;
 					if (!($updateStmt = $writeLink->prepare("UPDATE uploads SET s3finishedurl = '?' WHERE id = '?'")))
