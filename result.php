@@ -70,7 +70,7 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 	$link = getDbWriteConnection();
 	if (!$link || $link == null)
 	{
-		die("A database error occurred: " . mysqli_error($link);
+		die("A database error occurred: " . mysqli_error($link));
 	}
 
 	$stmt = null;
