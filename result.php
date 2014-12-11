@@ -83,7 +83,13 @@ if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadfile)) {
 	{
 
 		$fileName = basename($_FILES[$fileInputName]['name']);
-		$stmt->bind_param("sssssii",$_POST["email"],$_POST["cellPhone"],$fileName,$imageURL,"none",0,0);
+		$email = $_POST["useremail"];
+		$phone = $_POST["phone"];
+		$s3rawURL = $imageURL;
+		$s3finishedurl = "none";
+		$status =0;
+		$issubscribed=0;
+		$stmt->bind_param("sssssii",$email,$phone,$filename,$s3rawurl,$s3finishedurl,$status,$issubscribed);
 
 		if (!$stmt->execute())
 		{
