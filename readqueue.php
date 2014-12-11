@@ -46,7 +46,7 @@ while (true)
 				$id = '';
 				$email = '';
 				$phone = '';
-				$filename = ''
+				$filename = '';
 				$s3rawurl = '';
 				$s3finishedurl = '';
 				$status = '';
