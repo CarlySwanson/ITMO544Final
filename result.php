@@ -8,17 +8,18 @@ use Aws\S3\S3Client;
 // Class: ITMO 544
 // Assignment: Final Assignment
 include ("common.php");
+
+$fileInputName = "imageToUpload";
+$uploaddir = '/var/www/uploads/';
+$uploadfile = $uploaddir . basename($_FILES[$fileInputName]['name']);
+
+$html = '';
 if (!isset($_POST["username"]) || !isset($_POST["email"]) || !isset($_POST["cellPhone"]))
 {
 	$html = getDiv(getParagraph("An error occurred while processing your upload; please be sure to fill in all of the upload form fields. <a href='index.php'>Click here to return to the upload page.</a>", "inputError"));
 	echo $html;
 	exit;
 }
-$fileInputName = "imageToUpload";
-$uploaddir = '/var/www/uploads/';
-$uploadfile = $uploaddir . basename($_FILES[$fileInputName]['name']);
-
-$html = '';
 $html .= getDoctype();
 $html .= getHtmlStart();
 $html .= getHeader("Upload Result");
