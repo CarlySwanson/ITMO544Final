@@ -112,6 +112,15 @@ while (true)
 						}
 						else
 						{
+							$receiptHandle = "";
+							foreach ($result->getPath('Messages/*/ReceiptHandle') as $receiptHandle)
+							{
+								echo $receiptHandle ."\n";
+							}
+							$result = $client->deleteMessage(array(
+    								'QueueUrl' => "$queueURL",
+   							 	'ReceiptHandle' => "$receiptHandle"
+							));
 							// Publish SNS update
 						}
 					}
